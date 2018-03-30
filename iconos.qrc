@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/Acciones">
+        <file>Actualizar.png</file>
+        <file>Captura.png</file>
+        <file>Parar.png</file>
+        <file>Grabar.png</file>
+        <file>Patron.png</file>
+        <file>CancelarPatron.png</file>
+        <file>CamaraPatron.png</file>
+        <file>CalibradoPatron.png</file>
+        <file>PararGrabacion.png</file>
+        <file>PatronConfiguracion.png</file>
+        <file>PatronVer.png</file>
+        <file>Atras.png</file>
+        <file>Inicio.png</file>
+        <file>Adelante.png</file>
+        <file>Final.png</file>
+        <file>PatronGuardar.png</file>
+        <file>PatronAgregar.png</file>
+        <file>EliminarPatron.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>PatronVer.png</file>
+        <file>PatronConfiguracion.png</file>
+        <file>PararGrabacion.png</file>
+    </qresource>
+</RCC>
