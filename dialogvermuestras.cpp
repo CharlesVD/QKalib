@@ -23,6 +23,12 @@ void DialogVerMuestras::mostrarImagen(cv::Mat imagenCv)
     ui->labelImagenMuestra->setPixmap(QPixmap::fromImage(imagen));
 }
 
+void DialogVerMuestras::ponIndice(int index)
+{
+    indice=index;
+    actualizaIndice();
+}
+
 void DialogVerMuestras::actualizaIndice()
 {
     ui->labelIndice->setText(QString::number(indice+1)+" de "+QString::number(noImagenes+1));

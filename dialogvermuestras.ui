@@ -179,7 +179,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="labelImagenMuestra">
      <property name="styleSheet">
-      <string notr="true">background-color:black;</string>
+      <string notr="true">background:rgb(50,50,50);</string>
      </property>
      <property name="text">
       <string/>

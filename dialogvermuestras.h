@@ -17,6 +17,7 @@ public:
     ~DialogVerMuestras();
     void leerImagenesMuestra(cv::Mat imagenesMuestra[50],int noMuestras);
     void mostrarImagen(cv::Mat imagenCv);
+    void ponIndice(int index);
 
 private slots:
     void on_pushButtonAdelante_clicked();

@@ -6,6 +6,7 @@
 
 #include <QMainWindow>
 #include <QtMultimedia/QCameraInfo>
+#include <QStandardPaths>
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QFileDialog>
@@ -35,17 +36,21 @@ private slots:
 
     void actualizaVista();
 
+    void actualizaVistaGrabacion();
+
+    void segTranscurrido();
+
+    void guardadndoArchivos();
+
+    void calcFps();
+
     void on_pushButtonCaptura_clicked();
 
     void on_pushButtonCalibrar_clicked();
 
     void on_pushButtonCalcularCalib_clicked();
 
-    void on_actionPanel_principal_toggled(bool arg1);
-
     void on_pushButtonActualizaListaDeCamaras_clicked();
-
-    void on_pushButtonExaminarArchivosGrabar_clicked();
 
     void on_pushButtonGrabar_clicked();
 
@@ -55,7 +60,7 @@ private slots:
 
     void on_pushAgregarPatron_clicked();
 
-    void on_pushButton_clicked();
+    void on_pushButtonConfigCalib_clicked();
 
     void on_pushButtonEliminarMuestras_clicked();
 
@@ -63,20 +68,62 @@ private slots:
 
     void on_actionAcerca_de_triggered();
 
+    void on_pushButtonDist_clicked();
+
+    void on_pushButtonGuardarGrabacion_clicked();
+
+    void on_actionVer_Panel_triggered();
+
+    void on_actionVer_herramientas_de_calibracion_triggered();
+
+    void on_actionVer_informacion_triggered();
+
+    void on_pushButtonEliminarGrabacion_clicked();
+
+    void on_pushButtonVerGrabacion_clicked();
+
+    void on_horizontalSliderProgresoGrabacion_sliderPressed();
+
+    void on_horizontalSliderProgresoGrabacion_sliderReleased();
+
+    void on_pushButtonDetenerVerGrabacion_clicked();
+
+    void on_horizontalSliderProgresoGrabacion_sliderMoved(int position);
+
 private:
     Ui::MainWindow *ui;
+
+    QString dir;
+    int indiceVerGrabacion;
+    int indiceFrame;
+    int noFramesCap;
+    float framesPerSecond;
+    int tiempoCuadroGrabando;
 
     DialogVerMuestras *dialogVerMuestras;
     DialogConfigurarCalibracion *dialogConfigCalib;
 
     QTimer *actualiza;
+    QTimer *fps;
+    QTimer *relojGrabacion;
+    QTimer *conteoGuardarArchivos;
+    QTimer *actualizaVerGrabacion;
+
     cv::VideoCapture camara;
     QList<QCameraInfo> camaras;
     bool calibrar;
     bool capturando;
     bool grabando;
+    bool reproduciendoGrabacion;
+    bool quitarDistorcion;
     int noImgGrabadas;
+    bool navegarGrabacion;
     cv::Mat imgGrabadas[10000];
+
+    float segTotalGrabacion;
+    float segGrabacion;
+    uint minGrabacion;
+    uint horasGrabacion;
 
     double tamCuadroCalib;
     int altoPatron;
@@ -88,10 +135,16 @@ private:
     cv::Mat imagenesMustra[50];
     static void calcPosEsquinas(cv::Size boardSize, float squareSize, std::vector<cv::Point3f>& corners);
 
+    cv::Mat matrizCamara;
+    cv::Mat distCoeffs;
+
     void actualizaListaDeCamaras();
     void eliminarMuestras();
     void detenerCaptura();
     void detenerGrabacion();
+    void detenerVerGrabacion();
+    void pausarVerGrabacion();
+    void eliminarGrabacion();
     void iniciarCaptura();
     bool camaraDisponible();
 

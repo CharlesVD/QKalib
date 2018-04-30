@@ -18,10 +18,12 @@
         <file>PatronGuardar.png</file>
         <file>PatronAgregar.png</file>
         <file>EliminarPatron.png</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>PatronVer.png</file>
-        <file>PatronConfiguracion.png</file>
-        <file>PararGrabacion.png</file>
+        <file>Distorcion.png</file>
+        <file>NoDistorcion.png</file>
+        <file>Limpiar.png</file>
+        <file>Guardar.png</file>
+        <file>ReproducirGrabacion.png</file>
+        <file>PausarGrabacion.png</file>
+        <file>DetenerVerGrabacion.png</file>
     </qresource>
 </RCC>
