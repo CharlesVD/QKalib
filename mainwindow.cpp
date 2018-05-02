@@ -69,7 +69,7 @@ void MainWindow::actualizaListaDeCamaras()
     ui->comboBoxCamaras->clear();
 
     camaras = QCameraInfo::availableCameras();
-    #ifdef _WIN32 || _WIN64
+    #ifdef _WIN32
     int camCount=0;
     int index=0;
     QList<int> numCam;
@@ -88,7 +88,7 @@ void MainWindow::actualizaListaDeCamaras()
             break;
         }
     }
-    mostrarMensaje(QString::number(camCount));
+
     camara.~VideoCapture();
     ui->comboBoxCamaras->addItem("Selecciona la cámara");
     for(int i=0;i<camaras.length();i++)
@@ -150,30 +150,14 @@ bool MainWindow::camaraDisponible()
 {
     bool disponible=false;
     camaras = QCameraInfo::availableCameras();
-    #ifdef _WIN32 || _WIN64
-    int camCount=0;
-    int index=0;
-    QList<int> numCam;
-    while(true)
-    {
-        camara = cv::VideoCapture(index);
-        if(camara.isOpened())
-        {
-            numCam.append(index);
-            camCount++;
-        }
-        index++;
-        camara.release();
-        if(camCount==camaras.length())
-        {
-            break;
-        }
-    }
-    mostrarMensaje(QString::number(camCount));
-    camara.~VideoCapture();
+    #ifdef _WIN32
     for(int i=0;i<camaras.length();i++)
     {
-        if(ui->comboBoxCamaras->currentText()==camaras.at(i).description()+" | Video: "+QString::number(numCam.at(i)) )
+
+        QString camaraSelec=ui->comboBoxCamaras->currentText();
+        camaraSelec = camaraSelec.split("|").at(0);
+
+        if( camaraSelec==camaras.at(i).description()+" " )
         {
             disponible=true;
         }
@@ -612,7 +596,10 @@ void MainWindow::on_pushButtonCaptura_clicked()
                 mostrarMensaje("<b style='color:red;'>Capturando video...</b>");
                 mostrarMensaje("<b>"+camaras.at(ui->comboBoxCamaras->currentIndex()-1).description()+"</b>");
                 mostrarMensaje("<b>Resolución: "+QString::number(camara.get(CV_CAP_PROP_FRAME_WIDTH))+"x"+QString::number(camara.get(CV_CAP_PROP_FRAME_HEIGHT))+"</b>");
-                mostrarMensaje("<b>Velocidad: "+QString::number(camara.get(CV_CAP_PROP_FPS))+" FPS</b>");
+                if(camara.get(CV_CAP_PROP_FPS)>0)
+                {
+                    mostrarMensaje("<b>Velocidad: "+QString::number(camara.get(CV_CAP_PROP_FPS))+" FPS</b>");
+                }
                 if(!actualiza->isActive())
                 {
                     ui->pushButtonGrabar->setEnabled(true);
@@ -905,8 +892,13 @@ void MainWindow::on_actionAcerca_de_Qt_triggered()
 }
 
 void MainWindow::on_actionAcerca_de_triggered()
-{
-    QMessageBox::about(this,"Acerca de este software","Este software está bajo la licencia GNU GPL y GNU LGPLv3\nhttps://www.gnu.org/licenses/lgpl-3.0.en.html\n\n\tDesarrollado por: Charles Fernando Velázquez Dodge\t");
+{    
+    QMessageBox acercaDe;
+    acercaDe.setTextFormat(Qt::RichText);
+    acercaDe.setWindowTitle("Acerca de este software");
+    acercaDe.setIconPixmap(QPixmap(":/Acciones/QK_Logo.png"));
+    acercaDe.setText("Este software está bajo la licencia <a href='https://www.gnu.org/licenses/lgpl-3.0.en.html'>GNU LGPLv3</a>. El código fuente está disponible en <a href='https://github.com/CharlesVD/QKalib'>https://github.com/CharlesVD/QKalib</a>.<br><br>Desarrollado por: Charles Fernando Velázquez Dodge<br>Email: charles.fvd@gmail.com");
+    acercaDe.exec();
 }
 
 void MainWindow::on_pushButtonGuardarGrabacion_clicked()
@@ -1030,8 +1022,52 @@ void MainWindow::on_horizontalSliderProgresoGrabacion_sliderMoved(int position)
 {
     indiceVerGrabacion=position;
 
-    QImage mostrarVideoF =  QImage((const unsigned char*)(imgGrabadas[indiceVerGrabacion].data),
-                                   imgGrabadas[indiceVerGrabacion].cols,imgGrabadas[indiceVerGrabacion].rows,QImage::Format_Grayscale8);
+    cv::Mat img;
+    imgGrabadas[indiceVerGrabacion].copyTo(img);
+    cv::cvtColor(img,img,CV_GRAY2RGB);
+
+    if(segTotalGrabacion>0)
+    {
+        int horas=  std::floor( (indiceVerGrabacion/(noImgGrabadas/segTotalGrabacion))/3600);
+        int minutos= std::floor(  std::fmod((indiceVerGrabacion/(noImgGrabadas/segTotalGrabacion)),3600)  /60);
+        int segundos= std::fmod((  std::fmod((indiceVerGrabacion/(noImgGrabadas/segTotalGrabacion)),3600) ),60);
+
+        QString tiempo="";
+
+        if(QString::number(horas).length()<2)
+        {
+            tiempo += "0"+QString::number(horas)+":";
+        }
+        else
+        {
+            tiempo += QString::number(horas)+":";
+        }
+
+        if(QString::number(minutos).length()<2)
+        {
+            tiempo += "0"+QString::number(minutos)+":";
+        }
+        else
+        {
+            tiempo += QString::number(minutos)+":";
+        }
+
+        if(QString::number(segundos).length()<2)
+        {
+            tiempo += "0"+QString::number(segundos);
+        }
+        else
+        {
+            tiempo += QString::number(segundos);
+        }
+
+        cv::putText(img,tiempo.toStdString(),cv::Point((img.cols/2)-35,12),cv::FONT_HERSHEY_TRIPLEX,0.5,cv::Scalar(255,255,0));
+    }
+    cv::putText(img,"Fotograma: "+QString::number(indiceVerGrabacion).toStdString(),cv::Point(6,12),cv::FONT_HERSHEY_TRIPLEX,0.5,cv::Scalar(255,255,0));
+
+    QImage mostrarVideoF =  QImage((const unsigned char*)(img.data),
+                                   img.cols,img.rows,QImage::Format_RGB888);
 
     ui->labelSalidaCam->setPixmap(QPixmap::fromImage(mostrarVideoF));
+
 }

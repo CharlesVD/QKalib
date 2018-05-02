@@ -25,5 +25,10 @@
         <file>ReproducirGrabacion.png</file>
         <file>PausarGrabacion.png</file>
         <file>DetenerVerGrabacion.png</file>
+        <file>AcercaDe.png</file>
+        <file>Salir.png</file>
+        <file>Panel.png</file>
+        <file>QtLogo.png</file>
+        <file>QK_Logo.png</file>
     </qresource>
 </RCC>

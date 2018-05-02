@@ -25,8 +25,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>532</width>
-         <height>396</height>
+         <width>442</width>
+         <height>408</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
@@ -77,7 +77,7 @@
      <x>0</x>
      <y>0</y>
      <width>949</width>
-     <height>32</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSistema">
@@ -93,6 +93,10 @@
     <widget class="QMenu" name="menu_Panel_Principal">
      <property name="title">
       <string>&amp;Panel Principal</string>
+     </property>
+     <property name="icon">
+      <iconset resource="iconos.qrc">
+       <normaloff>:/Acciones/Panel.png</normaloff>:/Acciones/Panel.png</iconset>
      </property>
      <addaction name="separator"/>
      <addaction name="actionVer_Panel"/>
@@ -892,6 +896,9 @@
        <layout class="QGridLayout" name="gridLayout_7">
         <item row="0" column="0">
          <widget class="QTextEdit" name="textEditResultado">
+          <property name="contextMenuPolicy">
+           <enum>Qt::NoContextMenu</enum>
+          </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -922,16 +929,28 @@
    </widget>
   </widget>
   <action name="actionSalir">
+   <property name="icon">
+    <iconset resource="iconos.qrc">
+     <normaloff>:/Acciones/Salir.png</normaloff>:/Acciones/Salir.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Salir</string>
    </property>
   </action>
   <action name="actionAcerca_de_Qt">
+   <property name="icon">
+    <iconset resource="iconos.qrc">
+     <normaloff>:/Acciones/QtLogo.png</normaloff>:/Acciones/QtLogo.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Acerca de Qt</string>
    </property>
   </action>
   <action name="actionAcerca_de">
+   <property name="icon">
+    <iconset resource="iconos.qrc">
+     <normaloff>:/Acciones/AcercaDe.png</normaloff>:/Acciones/AcercaDe.png</iconset>
+   </property>
    <property name="text">
     <string>Acerca &amp;de este software</string>
    </property>
